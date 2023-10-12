@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "Social Pay",
+    "slug": "social-pay",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera"
+      ],
+      [
+        "expo-contacts"
+      ],
+      [
+        "expo-media-library",
+        {
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
+        "expo-image-picker"
+      ]
+    ],
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "45d6d62c-f1cd-4dec-88f5-a7f1e16399f1"
+      }
+    },
+    "owner": "sudoaugustin"
+  }
+}
