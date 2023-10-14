@@ -12,4 +12,4 @@ const resources = {
   jp: { translation: jp },
 };
 
-i18n.use(initReactI18next).init({ lng: 'bm', resources, interpolation: { escapeValue: false }, compatibilityJSON: 'v3' });
+i18n.use(initReactI18next).init({ lng: 'en', resources, interpolation: { escapeValue: false }, compatibilityJSON: 'v3' });

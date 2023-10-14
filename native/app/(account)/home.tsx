@@ -1,5 +1,6 @@
 import Avatar from 'components/Avatar';
 import Button from 'components/Button';
+import Gradient from 'components/Gradient';
 import Page from 'components/Page';
 import QRCode from 'components/QRCode/Display';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -49,7 +50,7 @@ export default function Index() {
   return (
     <Page unsafe>
       <View className='flex-center h-[65vw] px-4 gap-y-4 z-10 relative'>
-        <LinearGradient colors={isDark ? ['#0284c7', '#075985'] : ['#0EA5E9', '#3678DD']} className='w-screen h-full absolute' />
+        <Gradient className='w-screen h-full absolute' />
         <View style={{ paddingTop: insets.top }} className='flex-row justify-end w-full gap-x-2 top-2.5 absolute'>
           <Avatar name={name} source={avatar} size='xs' onPress={() => router.push('/setting')} />
         </View>

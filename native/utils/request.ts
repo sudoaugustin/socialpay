@@ -48,7 +48,7 @@ export default async function request<TData = unknown, TPayload = unknown>(url: 
     .catch(({ code, message, response }) => {
       const status = response.status || code;
       if (status === 401) {
-        $token.set(null);
+        $token.set('');
         $toast.set({ type: 'error', message: 'Session Expired' });
       } else {
         return Promise.reject({ status, message: response?.message || message });

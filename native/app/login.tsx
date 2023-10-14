@@ -1,5 +1,6 @@
 import Button from 'components/Button';
 import { Code, MultiForm, Phone, Submit } from 'components/Form';
+import Gradient from 'components/Gradient';
 import Page from 'components/Page';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -17,10 +18,10 @@ export default function Login() {
     <Page unsafe className='relative'>
       <View className='flex-row justify-between absolute w-screen h-full px-2.5'>
         {[1, 2, 3, 4, 5].map((i) => (
-          <View key={i} className='h-full border-l border-slate-200/75 border-dashed' />
+          <View key={i} className='h-full border-l border-slate-200/75 dark:border-slate-800/75 border-dashed' />
         ))}
       </View>
-      <View className='h-80 bg-brand-400 -skew-y-12 -m-12 mb-0 relative z-10' />
+      <Gradient className='h-80 bg-brand-400 -skew-y-12 -m-12 mb-0 relative z-10' />
       <ScrollView className='flex-1 -mt-10 space-y-40 pt-28 pb-2.5'>
         <MultiForm
           forms={[
@@ -29,7 +30,7 @@ export default function Login() {
               schema: schemas.object({ mobile: schemas.mobile }),
               children: ({ onSubmit }) => (
                 <View className='space-y-4 w-screen px-4'>
-                  <Text className='text-2xl font-sans-extrabold text-slate-800 mb-8'>{t('welcome')}</Text>
+                  <Text className='text-2xl font-sans-extrabold text-slate-800 dark:text-slate-200 mb-4'>{t('welcome')}</Text>
                   <Phone name='mobile' label={t('mobile')} />
                   <Submit label={t('actions.continue')} onSubmit={onSubmit} />
                 </View>
@@ -41,7 +42,7 @@ export default function Login() {
               schema: schemas.object({ code: schemas.code.required('Please enter OTP code') }),
               children: ({ values, setStep, onSubmit }) => (
                 <View className='w-screen px-4 space-y-4'>
-                  <Text className='text-2xl font-sans-extrabold text-slate-800 mb-8'>
+                  <Text className='text-2xl font-sans-extrabold text-slate-800 dark:text-slate-200 mb-8'>
                     {t('enter-code').replace('$phone', `09${astrikeNumber(values.mobile)}`)}
                   </Text>
                   <Code name='code' />

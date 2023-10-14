@@ -8,7 +8,9 @@ export default function Logout() {
   useEffect(() => {
     request('auth/logout')
       .catch(() => {})
-      .finally(() => $token.set(null));
+      .finally(async () => {
+        $token.set('');
+      });
   }, []);
 
   return (

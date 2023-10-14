@@ -11,7 +11,7 @@ export default function persistAtom<T = string>(key: string, initial?: T, effect
 
   onMount($atom, () => {
     SecureStore.getItemAsync(key).then((value) => {
-      $atom.set(JSON.parse(value || '') as T);
+      $atom.set(value ? JSON.parse(value) : initial || '');
     });
   });
 
