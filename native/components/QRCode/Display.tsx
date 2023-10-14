@@ -1,21 +1,19 @@
-import { useStore } from '@nanostores/react';
+import useProfile from 'hooks/useProfile';
 import { useRef } from 'react';
 import { View } from 'react-native';
 import SvgQRCode from 'react-native-qrcode-svg';
-import { $user } from 'stores';
 import SaveAndShare from 'views/SaveAndShare';
 
 export default function QRCode() {
   const ref = useRef(null);
-  const user = useStore($user);
-  const data = JSON.stringify({ mobile: user });
+  const { avatar, mobile } = useProfile();
 
   return (
     <View className='gap-y-5 justify-end items-center h-[356px]'>
       <SvgQRCode
-        logo={{ uri: user?.avatar }}
+        logo={{ uri: avatar }}
         size={256}
-        value={data}
+        value={JSON.stringify({ mobile })}
         getRef={(current) => {
           ref.current = current;
         }}

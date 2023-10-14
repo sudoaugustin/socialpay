@@ -4,9 +4,13 @@ export default model(
   'Session',
   new Schema({
     uid: { ref: 'User', type: Schema.ObjectId, required: true },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
     device: {
       IP: { type: String, required: true },
-      OS: { type: String, required: true, enum: ['ios', 'android'] },
+      OS: { type: String, default: 'Unknown' },
     },
     location: {
       city: { type: String, default: 'unknown' },

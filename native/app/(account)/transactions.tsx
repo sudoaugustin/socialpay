@@ -1,10 +1,10 @@
 import Button from 'components/Button';
 import { Form, Input } from 'components/Form';
 import Page from 'components/Page';
-import Return from 'components/Return';
-import TransactionItem from 'components/Transaction';
+import ProgressBar from 'components/ProgressBar';
+import TitleBar from 'components/TitleBar';
+import Transaction from 'components/Transaction';
 import { useFetch } from 'hooks/useQuery';
-import ProgressBar from 'icons/ProgressBar';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -49,10 +49,13 @@ export default function Transactions() {
     <Form watch schema={schema} onSubmit={() => {}}>
       {({ values, setValue }) => {
         return (
-          <Page unsafe>
-            <View style={{ paddingTop: top + 10 }} className='bg-white border-b relative z-10 shadow-xl shadow-slate-500 border-slate-200'>
+          <Page unsafe className='dark:bg-slate-900'>
+            <View
+              style={{ paddingTop: top + 10 }}
+              className='bg-white dark:bg-slate-800 border-b relative z-10 shadow-xl shadow-slate-400 dark:shadow-slate-800 border-slate-200 dark:border-slate-600'
+            >
               <View className='px-4'>
-                <Return title={t('transactions')} />
+                <TitleBar title={t('transactions')} />
                 <Input name='keyword' variant='outline' placeholder={t('enter-name-or-number')} />
               </View>
               <ScrollView horizontal className='w-full' showsHorizontalScrollIndicator={false}>
@@ -67,9 +70,16 @@ export default function Transactions() {
                       <Pressable
                         key={label}
                         onPress={handlePress}
-                        className={`px-2 py-1 rounded-md border ${isActive ? 'bg-brand-600 border-brand-400' : 'border-slate-200'}`}
+                        className={`px-2 py-1 rounded-md border 
+                        ${isActive ? 'bg-brand-600 border-brand-400 dark:border-brand-600' : 'border-slate-200 dark:border-slate-600'}`}
                       >
-                        <Text className={`text-xs font-sans-semibold ${isActive ? 'text-white' : 'text-slate-600'}`}>{label}</Text>
+                        <Text
+                          className={`text-xs font-sans-semibold ${
+                            isActive ? 'text-white dark:text-slate-800' : 'text-slate-600 dark:text-slate-400'
+                          }`}
+                        >
+                          {label}
+                        </Text>
                       </Pressable>
                     );
                   })}
@@ -90,7 +100,7 @@ export default function Transactions() {
                 data={filter(transactions, values)}
                 extraData={values}
                 className='flex-1 h-full'
-                renderItem={({ item }) => <TransactionItem {...item} className='px-4 py-4 border-b border-slate-100' />}
+                renderItem={({ item }) => <Transaction {...item} className='px-4 py-4 border-b' />}
                 keyExtractor={(transactions) => transactions._id}
               />
             )}

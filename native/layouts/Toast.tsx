@@ -1,5 +1,4 @@
 import { useStore } from '@nanostores/react';
-import { cva } from 'class-variance-authority';
 import Motion from 'components/Motion';
 import { ErrorIcon, SuccessIcon } from 'icons/Status';
 import { Text } from 'react-native';
@@ -7,20 +6,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { $toast } from 'stores/layout';
 
 const icons = {
-  error: <ErrorIcon className='w-5 h-5 fill-error-400' />,
+  error: <ErrorIcon className='w-5 h-5 fill-error-500' />,
   normal: undefined,
-  success: <SuccessIcon className='w-5 h-5 fill-green-400' />,
+  success: <SuccessIcon className='w-5 h-5 fill-green-500' />,
 };
-
-const classes = cva('absolute inset-x-4 flex-row items-center z-30 top-4 space-x-2 px-5 py-2.5 rounded-md bg-white shadow-xl', {
-  variants: {
-    state: {
-      error: 'bg-rose-50',
-      normal: 'bg-slate-50',
-      success: 'bg-emerald-50',
-    },
-  },
-});
 
 export default function Toast() {
   const toast = useStore($toast);
@@ -29,9 +18,13 @@ export default function Toast() {
 
   return (
     message && (
-      <Motion y={-20} style={{ marginTop: insets.top }} className={classes({ state: type })}>
+      <Motion
+        y={-20}
+        style={{ marginTop: insets.top }}
+        className='absolute inset-x-4 flex-row items-center z-50 top-4 space-x-2 px-5 py-2.5 rounded-md shadow-xl bg-slate-100 dark:bg-slate-900'
+      >
         {icons[type]}
-        <Text className='text-slate-900 font-sans-bold'>{message}</Text>
+        <Text className='text-slate-900 dark:text-slate-100 font-sans-bold'>{message}</Text>
       </Motion>
     )
   );

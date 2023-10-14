@@ -2,9 +2,13 @@ import Constants from 'expo-constants';
 import { Easing } from 'react-native';
 
 export const langs = [
-  { label: 'ဗမာ', value: 'mm' },
   { label: 'EN', value: 'en' },
+  { label: 'ဗမာ', value: 'bm' },
+  { label: 'တႆး', value: 'sh' },
+  { label: '日本語', value: 'jp' },
 ];
+
+export const themes = ['dark', 'light', 'system'];
 
 export const easings = {
   linear: Easing.bezier(0, 0.6, 0, 0.6),

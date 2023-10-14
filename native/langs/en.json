@@ -15,6 +15,11 @@
   "transactions": "Transactions",
   "bank-accounts": "Bank accounts",
   "errors": {
+    "enter-amount": "Please enter amount",
+    "enter-mobile": "Please enter mobile no",
+    "max-length-20": "Maximum Length is 20",
+    "minium-amount": "Minimum amount is 10000 Ks",
+    "invalid-mobile": "Invalid mobile number",
     "can't-find-account": "Can't find account with this mobile.",
     "insufficient-balance": "Insufficient balance in the account"
   },
@@ -22,8 +27,8 @@
     "contact": "Allow contacts access"
   },
   "actions": {
-    "no": "no",
-    "yes": "yes",
+    "no": "No",
+    "yes": "Yes",
     "send": "Send",
     "save": "Save",
     "share": "Share",
@@ -38,6 +43,11 @@
     "transfer": "Transfer",
     "continue": "Continue",
     "withdraw": "Withdraw"
+  },
+  "status": {
+    "pending": "Pending",
+    "verified": "Verified",
+    "rejected": "Rejected"
   },
   "services": {
     "taxes": "Pay Taxes",
@@ -69,5 +79,16 @@
   "socialpay-to-bank-success": "Transferred $amount Ks to $bank bank account",
   "socialpay-to-banks": "SocialPay to Banks",
   "banks-to-socialpay": "Banks to SocialPay",
-  "enter-name-or-number": "Enter name or number"
+  "enter-name-or-number": "Enter name or number",
+  "profile": "Profile",
+  "sessions": "Sessions",
+  "theme": "Theme",
+  "lang": "Language",
+  "faq": "FAQ & Support",
+  "logout": "Logout",
+  "upload-profile": "Upload profile image",
+  "name": "Name",
+  "choose-theme": "Choose Theme",
+  "choose-language": "Choose Language",
+  "settings": "Settings"
 }

@@ -20,14 +20,14 @@ type FieldProps = Omit<Props, 'children'> & VariantProps<typeof classes>;
 const classes = cva('flex-row flex-grow overflow-hidden relative', {
   variants: {
     state: {
-      idle: 'border-slate-200',
-      error: 'border-rose-400',
-      focus: 'border-brand-400',
+      idle: 'border-slate-200 dark:border-slate-800',
+      error: 'border-error-400 dark:border-error-800',
+      focus: 'border-brand-400 dark:border-brand-800',
       disable: 'border-slate-200',
     },
     variant: {
-      solid: 'py-1.5 px-3 bg-slate-50 border rounded-md',
-      outline: 'py-0.5 bg-white border-b',
+      solid: 'py-1.5 px-3 bg-slate-50 dark:bg-slate-900 border rounded-md',
+      outline: 'py-0.5 bg-transparent border-b',
     },
   },
 });
@@ -44,7 +44,9 @@ export default function Field({ bare, name, state, label, prefix, postfix, varia
 
   return (
     <View {...rest}>
-      {label && <Text className={`text-slate-600 font-sans-semibold ${variant === 'solid' ? 'mb-1' : 'mb-0.5'}`}>{label}</Text>}
+      {label && (
+        <Text className={`text-slate-600 dark:text-slate-400 font-sans-semibold ${variant === 'solid' ? 'mb-2' : 'mb-0.5'}`}>{label}</Text>
+      )}
       {bare ? (
         $children
       ) : (
@@ -54,7 +56,7 @@ export default function Field({ bare, name, state, label, prefix, postfix, varia
           {postfix?.({ value, setValue: onChange })}
         </View>
       )}
-      {!isFocus && message && <Text className='mt-0.5 font-sans-medium text-rose-600'>{message}</Text>}
+      {message && <Text className='mt-1 font-sans-medium text-rose-600'>{message}</Text>}
     </View>
   );
 }

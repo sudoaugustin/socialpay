@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-type Popup = {
+type Sheet = {
   title?: string;
   children: ReactNode;
   className?: string;

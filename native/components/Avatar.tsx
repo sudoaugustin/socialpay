@@ -27,15 +27,16 @@ export default function Avatar({ name = '', size = 'md', source, className, ...r
       lg: 'w-10 h-10',
     },
   };
+
   return (
     <Pressable
       {...rest}
-      className={`rounded-full flex-center overflow-hidden bg-brand-50 border border-white/25 ${classes.root[size]} ${className}`}
+      className={`rounded-full flex-center overflow-hidden bg-brand-50 dark:bg-brand-950 border border-brand-100/25 dark:border-brand-900/25 ${classes.root[size]} ${className}`}
     >
       {source ? (
         <ExpoImage source={source} className='w-full h-full' />
       ) : name ? (
-        <Text className={`font-sans-extrabold text-brand-400 ${classes.text[size]}`}>{name[0]}</Text>
+        <Text className={`font-sans-extrabold text-brand-500 ${classes.text[size]}`}>{name[0]}</Text>
       ) : (
         <UserIcon className={`fill-brand-400 ${classes.icon[size]}`} />
       )}

@@ -6,7 +6,7 @@ import { openSettings } from 'expo-linking';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, Text, View } from 'react-native';
-import { $popup } from 'stores/layout';
+import { $sheet } from 'stores/layout';
 import { formatMobile, search, stripMobile } from 'utils';
 import schemas from 'utils/schemas';
 
@@ -21,20 +21,20 @@ function Contact({ name, image, phoneNumbers = [], onSelect }: ContactProps) {
 
   const handleSelect = (mobile: string) => {
     onSelect(mobile);
-    $popup.set(undefined);
+    $sheet.set(undefined);
   };
 
   return (
     <Pressable className='flex-row gap-x-2.5 my-2' onPress={() => handleSelect(mobiles[0].number)}>
       <Avatar name={name} source={image} />
       <View>
-        <Text className='font-sans-bold text-slate-600' numberOfLines={1}>
+        <Text className='font-sans-bold text-slate-800 dark:text-slate-200' numberOfLines={1}>
           {name}
         </Text>
         <View className='space-y-0.5 mt-1'>
           {mobiles.map(({ number }) => (
             <Pressable key={number} onPress={() => handleSelect(number)}>
-              <Text className='font-sans-medium text-slate-500'>{formatMobile(number)}</Text>
+              <Text className='font-sans-medium text-slate-600 dark:text-slate-400'>{formatMobile(number)}</Text>
             </Pressable>
           ))}
         </View>

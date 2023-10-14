@@ -1,13 +1,13 @@
 import { Form, Submit } from 'components/Form';
-import ContactInput from 'components/Form/ContactInput';
 import Field from 'components/Form/Field';
 import Page from 'components/Page';
-import Return from 'components/Return';
+import TitleBar from 'components/TitleBar';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View, ViewProps } from 'react-native';
 import { $toast } from 'stores/layout';
 import schemas from 'utils/schemas';
+import ContactInput from 'views/ContactInput';
 
 const schema = schemas.object({ mobile: schemas.mobile, amount: schemas.amount });
 
@@ -26,9 +26,11 @@ function Amounts(props: ViewProps) {
                 key={amount}
                 onPress={() => setValue(amount)}
                 className={`border flex-1 min-w-[30%] rounded-md px-4 py-2
-                ${isSelected ? 'bg-brand-500 border-brand-500' : 'bg-white border-slate-200'}`}
+                ${isSelected ? 'bg-brand-500 border-brand-500' : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800'}`}
               >
-                <Text className={`text-sm font-sans-bold ${isSelected ? 'text-white' : 'text-slate-600'}`}>{amount} Ks</Text>
+                <Text className={`text-sm font-sans-bold ${isSelected ? 'text-white' : 'text-slate-600 dark:text-slate-400'}`}>
+                  {amount} Ks
+                </Text>
               </Pressable>
             );
           })}
@@ -44,7 +46,7 @@ export default function Topup() {
 
   return (
     <Page className='px-4'>
-      <Return title={t('services.topup')} />
+      <TitleBar title={t('services.topup')} />
       <Form
         url='/transaction'
         schema={schema}

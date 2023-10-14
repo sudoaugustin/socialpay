@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   const { mobile } = req.body;
   const user = (await User.findOne({ mobile })) || (await new User({ mobile, secret: speakeasy.generateSecret().base32 }).save());
-  await sendOTP(user.secret, user.mobile);
+  await sendOTP(user.secret as string, user.mobile as string);
   res.status(200).end();
 });
 
@@ -19,7 +19,7 @@ router.post('/verify', async (req, res) => {
 
   if (!user) return res.status(404).end();
 
-  const isVerified = code === '000000' || speakeasy.totp.verify({ secret: user.secret, token: code });
+  const isVerified = code === '000000' || speakeasy.totp.verify({ secret: user.secret as string, token: code });
 
   if (!isVerified) return res.status(406).end();
 

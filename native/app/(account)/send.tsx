@@ -3,10 +3,9 @@ import Button from 'components/Button';
 import Divider from 'components/Divider';
 import { Input, MultiForm, Submit } from 'components/Form';
 import Amount from 'components/Form/Amount';
-import ContactInput from 'components/Form/ContactInput';
 import Page from 'components/Page';
 import Scanner from 'components/QRCode/Scanner';
-import Return from 'components/Return';
+import TitleBar from 'components/TitleBar';
 import { useFetch } from 'hooks/useQuery';
 import LottieView from 'lottie-react-native';
 import { useState } from 'react';
@@ -16,6 +15,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { $toast } from 'stores/layout';
 import { formatDate, formatMobile } from 'utils';
 import schemas from 'utils/schemas';
+import ContactInput from 'views/ContactInput';
 
 const $schemas = [
   schemas.object({ mobile: schemas.mobile }),
@@ -43,7 +43,7 @@ export default function Send() {
             config: { method: 'GET' },
             children: ({ setStep, setStore, setValue, onSubmit }) => (
               <View className='min-h-full relative'>
-                <Return title={t('scan-to-pay')} invert style={{ top: top + 10 }} className='absolute z-20 w-full' />
+                <TitleBar title={t('scan-to-pay')} invert style={{ top: top + 10 }} className='absolute z-20 w-full' />
                 <Scanner
                   onScanned={(data) => {
                     const { mobile } = JSON.parse(data);
@@ -89,11 +89,11 @@ export default function Send() {
             schema: $schemas[1],
             children: ({ values, setStep, onSubmit }) => (
               <SafeAreaView className='pb-2.5 space-y-5'>
-                <Return title={t('actions.transfer')} onReturn={() => setStep(1)} />
+                <TitleBar title={t('actions.transfer')} onReturn={() => setStep(1)} />
                 <View className='items-center py-2.5'>
                   <Avatar size='lg' name={data.name} source={data.avatar} />
-                  <Text className='text-lg font-sans-bold mt-2'>{data.name}</Text>
-                  <Text className='text-sm font-sans-medium'>{formatMobile(values.mobile)}</Text>
+                  <Text className='text-lg text-slate-800 dark:text-slate-200 font-sans-bold mt-2'>{data.name}</Text>
+                  <Text className='text-sm text-slate-600 dark:text-slate-400 font-sans-medium'>{formatMobile(values.mobile)}</Text>
                 </View>
                 <Amount name='amount' label={t('amount')} />
                 <Input name='note' label={`${t('note')} (${t('optional')})`} multiline numberOfLines={5} />
@@ -120,26 +120,30 @@ export default function Send() {
                       //@ts-ignore
                       className='w-32 h-32 mx-auto'
                     />
-                    <Text className='font-sans-bold text-lg my-5 mx-auto'>{t('transaction-success')}</Text>
-                    <View className='bg-slate-50 w-full rounded-xl border border-slate-200'>
-                      <View className='flex-row items-center justify-between px-2.5 py-5 border-b border-dashed border-slate-200'>
+                    <Text className='font-sans-bold text-lg my-5 mx-auto text-slate-800 dark:text-slate-100'>
+                      {t('transaction-success')}
+                    </Text>
+                    <View className='bg-slate-50 dark:bg-slate-900 w-full rounded-xl border border-slate-200 dark:border-slate-800'>
+                      <View className='flex-row items-center justify-between px-2.5 py-5 border-b border-dashed border-slate-200 dark:border-slate-800'>
                         <View className='flex-row items-center gap-x-2.5'>
                           <Avatar name={data.name} source={data.avatar} />
                           <View>
-                            <Text className='font-sans-extrabold text-sm'>{data.name || t('unknown')}</Text>
-                            <Text className='font-sans-medium text-xs text-slate-600'>{formatMobile(values.mobile)}</Text>
+                            <Text className='font-sans-extrabold text-sm text-slate-950 dark:text-white'>{data.name || t('unknown')}</Text>
+                            <Text className='font-sans-medium text-xs text-slate-600 dark:text-slate-400'>
+                              {formatMobile(values.mobile)}
+                            </Text>
                           </View>
                         </View>
-                        <Text className='font-sans-bold text-base text-error-500'>- {values.amount} Ks</Text>
+                        <Text className='font-sans-bold text-base text-rose-600 dark:text-rose-400'>- {values.amount} Ks</Text>
                       </View>
                       <View className='px-2.5 py-5 space-y-5'>
                         <View className='space-y-0.5'>
-                          <Text className='font-sans-medium text-sm text-slate-500'>{t('transaction-id')}</Text>
-                          <Text className='font-sans-medium text-sm text-slate-800'>{data.id}</Text>
+                          <Text className='font-sans-medium text-sm text-slate-600 dark:text-slate-400'>{t('transaction-id')}</Text>
+                          <Text className='font-sans-medium text-sm text-slate-800 dark:text-slate-200'>{data.id}</Text>
                         </View>
                         <View className='space-y-0.5'>
-                          <Text className='font-sans-medium text-sm text-slate-500'>{t('transaction-id')}</Text>
-                          <Text className='font-sans-medium text-sm text-slate-800'>{formatDate(data.date)}</Text>
+                          <Text className='font-sans-medium text-sm text-slate-600 dark:text-slate-400'>{t('transaction-id')}</Text>
+                          <Text className='font-sans-medium text-sm text-slate-800 dark:text-slate-200'>{formatDate(data.date)}</Text>
                         </View>
                       </View>
                     </View>

@@ -9,15 +9,20 @@ import {
 } from '@expo-google-fonts/manrope';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen } from 'expo-router';
-import Fetching from 'layouts/Fetching';
-import Popup from 'layouts/Popup';
+import Sheet from 'layouts/Sheet';
 import Toast from 'layouts/Toast';
 import { View } from 'moti';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { $lang } from 'stores';
+import { $theme } from 'stores/layout';
 import 'utils/i18n';
 
 SplashScreen.preventAutoHideAsync();
+
+// Need to load all local stoted atoms
+$lang.get();
+$theme.get();
 
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
@@ -44,11 +49,10 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       {fontsLoaded ? (
-        <View>
+        <View className='bg-white dark:bg-slate-950'>
           <Slot />
           <Toast />
-          <Popup />
-          <Fetching />
+          <Sheet />
         </View>
       ) : null}
     </SafeAreaProvider>

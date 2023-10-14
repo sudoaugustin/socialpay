@@ -1,5 +1,6 @@
 import auth from './routes/auth';
 import bank from './routes/bank';
+import session from './routes/session';
 import transaction from './routes/transaction';
 import user from './routes/user';
 import 'dotenv/config';
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', auth);
 app.use('/bank', bank);
 app.use('/user', user);
+app.use('/session', session);
 app.use('/transaction', transaction);
 
 app.listen(3000, () => console.log('Server Started'));

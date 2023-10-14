@@ -1,6 +1,6 @@
 import { VariantProps, cva } from 'class-variance-authority';
+import ProgressBar from 'components/ProgressBar';
 import { useRouter } from 'expo-router';
-import ProgressBar from 'icons/ProgressBar';
 import { ReactNode, useState } from 'react';
 import { Pressable, PressableProps, Text, View } from 'react-native';
 
@@ -16,18 +16,18 @@ type Classes = VariantProps<typeof root>;
 const root = cva('flex-center flex-row rounded-lg px-4 h-10', {
   variants: {
     state: { idle: '', loading: '', disable: 'opacity-50' },
-    intent: { solid: 'bg-brand-600', outline: 'bg-brand-100' },
+    intent: { solid: 'bg-brand-600 dark:bg-brand-400', outline: 'bg-brand-100 dark:bg-brand-900' },
     pseudo: { active: '' },
   },
   compoundVariants: [
-    { pseudo: 'active', intent: 'solid', className: 'bg-brand-500' },
-    { pseudo: 'active', intent: 'outline', className: 'bg-brand-200' },
+    { pseudo: 'active', intent: 'solid', className: 'bg-brand-500 dark:bg-brand-300' },
+    { pseudo: 'active', intent: 'outline', className: 'bg-brand-200 dark:bg-brand-800' },
   ],
 });
 
 const text = cva('text-sm font-sans-bold', {
   variants: {
-    intent: { solid: 'text-white', outline: 'text-brand-600' },
+    intent: { solid: 'text-white dark:text-slate-950', outline: 'text-brand-600 dark:text-brand-400' },
   },
 });
 

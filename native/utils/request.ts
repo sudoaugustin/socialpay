@@ -1,6 +1,7 @@
 import axios, { RawAxiosRequestConfig, RawAxiosRequestHeaders } from 'axios';
 import * as Device from 'expo-device';
 import { $token } from 'stores';
+import { $toast } from 'stores/layout';
 
 export type RespondError = { status: number | string; message: string };
 
@@ -37,11 +38,20 @@ export default async function request<TData = unknown, TPayload = unknown>(url: 
   return axios<TData>({
     url,
     method,
+    //@ts-ignore
     baseURL: process.env.EXPO_PUBLIC_API_URL,
     headers: { ...headers, Authorization: $token.get() },
     [method !== 'GET' ? 'data' : 'params']: { ...(type === 'multipart' ? formData : payload), OS: Device.osName?.toLowerCase() },
     ...rest,
   })
     .then(({ data }) => data)
-    .catch(({ code, message, response }) => Promise.reject({ status: response?.status || code, message: response?.message || message }));
+    .catch(({ code, message, response }) => {
+      const status = response.status || code;
+      if (status === 401) {
+        $token.set(null);
+        $toast.set({ type: 'error', message: 'Session Expired' });
+      } else {
+        return Promise.reject({ status, message: response?.message || message });
+      }
+    });
 }

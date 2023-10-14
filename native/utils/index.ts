@@ -32,3 +32,7 @@ export function stringifyParamsURL(url: string, $params: { [k: string]: string }
   });
   return `${url}?${params.toString()}`;
 }
+
+export function cookOptions(items: Option[]) {
+  return items.map((item) => (typeof item === 'string' ? { label: item, value: item } : item));
+}

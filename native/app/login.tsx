@@ -8,7 +8,6 @@ import { $token } from 'stores';
 import { $toast } from 'stores/layout';
 import { astrikeNumber } from 'utils';
 import schemas from 'utils/schemas';
-import LangsToggle from 'views/LangsToggle';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -62,7 +61,6 @@ export default function Login() {
             },
           ]}
         />
-        <LangsToggle />
       </ScrollView>
     </Page>
   );

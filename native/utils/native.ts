@@ -24,6 +24,6 @@ export function openAppSetting() {
 export async function preserveView(ref: RefObject<View>, options: PreserveViewOptions) {
   captureRef(ref, { fileName: options.filename })
     .then(options.isSave ? saveToAlbum : Sharing.shareAsync)
-    .then(() => options.message && $toast.set({ type: 'success', message: options.message }))
+    .then(() => options.message && $toast.set({ message: options.message }))
     .catch((err) => $toast.set({ type: 'error', message: err }));
 }

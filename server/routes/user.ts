@@ -1,3 +1,4 @@
+import Session from '../models/Session';
 import Transaction from '../models/Transaction';
 import User from '../models/User';
 import { protect } from '../utils/middlewares';
@@ -8,8 +9,13 @@ const router = express.Router();
 router.use(protect);
 
 router.get('/', async (req, res) => {
-  const user = await User.findOne({ _id: req.uid }, { secret: 0 });
+  const user = await User.findById(req.uid, { _id: 0, __v: 0, secret: 0 });
   user ? res.json(user).end() : res.status(404).end();
+});
+
+router.put('/', async (req, res) => {
+  await User.findByIdAndUpdate(req.uid, req.body);
+  res.end();
 });
 
 router.get('/exist', async (req, res) => {

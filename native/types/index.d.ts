@@ -1,6 +1,6 @@
 /// <reference types="nativewind/types" />
 
-type Lang = 'en' | 'mm';
+type Lang = 'en' | 'bm';
 
 type User = { name: string; avatar: string; mobile: string; balance: number };
 
@@ -11,6 +11,21 @@ type Bank = {
   account: {
     holder: string;
     number: string;
+  };
+};
+
+type Option = string | { label: string; value: string };
+
+type Session = {
+  _id: string;
+  date: string;
+  device: {
+    IP: string;
+    OS: 'ios' | 'android';
+  };
+  location: {
+    city: string;
+    country: string;
   };
 };
 

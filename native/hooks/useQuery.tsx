@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { $fetching } from 'stores/layout';
 import useSWR, { SWRConfiguration, useSWRConfig } from 'swr';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
 import request, { RequestConfig, RespondError } from 'utils/request';
@@ -10,7 +8,10 @@ export function useFetch<TData = unknown, TPayload = unknown>(
   { enable = true, ...options }: SWRConfiguration<TData, RespondError> & { enable?: boolean } = {},
 ) {
   const key = enable ? [url, config.payload] : null;
-  const fetcher = useSWR(key, () => request<TData, TPayload>(url, { method: 'GET', ...config }), { ...options, revalidateOnMount: true });
+  const fetcher = useSWR(key, () => request<TData, TPayload>(url, { method: 'GET', ...config }), {
+    ...options,
+    revalidateOnMount: true,
+  } as never);
 
   return {
     ...fetcher,
@@ -26,7 +27,7 @@ export function useMutate<TData = unknown, TPayload = unknown>(
   const { trigger, ...rest } = useSWRMutation(
     url,
     (url: string, { arg }: { arg: RequestConfig<TPayload> }) => request<TData, TPayload>(url, { ...config, ...arg }),
-    options,
+    options as never,
   );
 
   return {

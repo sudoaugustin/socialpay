@@ -1,18 +1,18 @@
 import Button from 'components/Button';
 import Page from 'components/Page';
-import Return from 'components/Return';
+import ProgressBar from 'components/ProgressBar';
+import TitleBar from 'components/TitleBar';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import useIsDark from 'hooks/useIsDark';
 import { useFetch } from 'hooks/useQuery';
-import { AddCircleIcon, CloseIcon } from 'icons';
-import ProgressBar from 'icons/ProgressBar';
-import { useState } from 'react';
+import { AddCircleIcon, MinusCircleIcon } from 'icons/Math';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, View } from 'react-native';
-import { $popup } from 'stores/layout';
+import { $sheet } from 'stores/layout';
 import { astrikeNumber } from 'utils';
 import { banks } from 'utils/const';
-import { AddBank, RmvBank, TransferBank } from 'views/BankPopups';
+import { AddBank, RmvBank, TransferBank } from 'views/Bank';
 
 const classes = {
   root: {
@@ -29,11 +29,12 @@ const classes = {
 
 export default function Banks() {
   const { t } = useTranslation();
-  const [offset, setOffset] = useState(0);
+  const isDark = useIsDark();
+
   const { data, isLoading, mutate } = useFetch<Bank[]>('/bank');
 
   const showTransferPopup = (bank: Bank, isDeposit = true) => {
-    $popup.set({
+    $sheet.set({
       title: isDeposit ? t('deposit-into-bank') : t('withdraw-from-bank'),
       children: <TransferBank {...bank} isDeposit={isDeposit} />,
     });
@@ -41,22 +42,18 @@ export default function Banks() {
 
   return (
     <Page className='px-4'>
-      <Return title={t('bank-accounts')} className={`${offset > 16 && 'border-b border-slate-300'}`}>
+      <TitleBar title={t('bank-accounts')}>
         <AddCircleIcon
-          onPress={() => $popup.set({ title: t('connect-a-bank-account'), children: <AddBank mutate={mutate} /> })}
-          className='w-6 h-6 fill-slate-600'
+          onPress={() => $sheet.set({ title: t('connect-a-bank-account'), children: <AddBank mutate={mutate} /> })}
+          className={`w-6 h-6 ${isDark ? 'fill-slate-400' : 'fill-slate-600'}`}
         />
-      </Return>
+      </TitleBar>
       {!data || isLoading ? (
         <View className='flex-1 flex-center'>
           {isLoading ? <ProgressBar size='lg' /> : <Text className='text-slate-600 font-sans-semibold'>{t('no-bank-account')}</Text>}
         </View>
       ) : (
-        <ScrollView
-          className='flex-1'
-          showsVerticalScrollIndicator={false}
-          onScroll={({ nativeEvent }) => setOffset(nativeEvent.contentOffset.y)}
-        >
+        <ScrollView className='flex-1' showsVerticalScrollIndicator={false}>
           <View className='space-y-2.5 py-5'>
             {data.map((bank, index) => {
               const { _id, name, status, account } = bank;
@@ -64,10 +61,10 @@ export default function Banks() {
               return (
                 <View key={index.toString()} className='h-48 w-full relative rounded-xl overflow-hidden'>
                   <LinearGradient colors={colors} className='w-full h-full' />
-                  <CloseIcon
-                    className='w-3.5 h-3.5 stroke-[3px] stroke-white absolute z-20 top-2 right-2'
+                  <MinusCircleIcon
+                    className='w-4 h-4 fill-white absolute z-20 top-1.5 right-1.5'
                     onPress={() =>
-                      $popup.set({
+                      $sheet.set({
                         title: t('remove-bank-acc'),
                         children: <RmvBank _id={_id} name={name} number={astrikeNumber(account.number)} mutate={mutate} />,
                       })
@@ -75,7 +72,9 @@ export default function Banks() {
                   />
                   <View className='absolute z-10 inset-0 p-5 w-full h-full justify-between'>
                     <View className='flex-row items-end justify-between  w-full'>
-                      <Image source={image} className='w-8 h-8 bg-white rounded-md' />
+                      <View className='w-8 h-8 flex-center bg-white rounded-md'>
+                        <Image source={image} className='w-6 h-6' contentFit='contain' />
+                      </View>
                       <Text className='uppercase font-sans-extrabold text-base text-white'>{name} Bank</Text>
                     </View>
                     <View className='space-y-2.5'>

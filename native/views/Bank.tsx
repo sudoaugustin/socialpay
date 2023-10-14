@@ -2,10 +2,10 @@ import Button from 'components/Button';
 import { Amount, Form, Input, Submit } from 'components/Form';
 import ImagePicker from 'components/Form/ImagePicker';
 import { Image } from 'expo-image';
+import useProfile from 'hooks/useProfile';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
-import { $user } from 'stores';
-import { $popup, $toast } from 'stores/layout';
+import { $sheet, $toast } from 'stores/layout';
 import { KeyedMutator } from 'swr';
 import { astrikeNumber, getRandomValue } from 'utils';
 import { banks } from 'utils/const';
@@ -25,15 +25,17 @@ const schema = schemas.object({
     }),
 });
 
+type Mutate = KeyedMutator<Bank[] | undefined>;
+
 type AddProps = {
-  mutate: KeyedMutator<Bank[]>;
+  mutate: Mutate;
 };
 
 type RmvProps = {
   _id: string;
   name: typeof $banks[number];
   number: string;
-  mutate: KeyedMutator<Bank[]>;
+  mutate: Mutate;
 };
 
 type TransferProps = Bank & {
@@ -52,7 +54,7 @@ export function AddBank({ mutate }: AddProps) {
       onError={({ status, message }) => $toast.set({ type: 'error', message: status === 409 ? t('bank-acc-already-inuse') : message })}
       onSuccess={() => {
         mutate();
-        $popup.set(undefined);
+        $sheet.set(undefined);
       }}
     >
       {({ values, setValue, onSubmit }) => (
@@ -64,22 +66,26 @@ export function AddBank({ mutate }: AddProps) {
                 <Pressable
                   key={bank}
                   className={`py-1 rounded-lg flex-1 flex-center border 
-                  ${isSelected ? 'bg-brand-100 border-brand-300' : 'border-slate-300'}`}
+                  ${
+                    isSelected
+                      ? 'bg-brand-100 dark:bg-brand-900 border-brand-300 dark:border-brand-700'
+                      : 'border-slate-300 dark:border-slate-700'
+                  }`}
                   onPress={() => setValue('name', bank)}
                 >
-                  <Text className={`text-base font-sans-semibold ${isSelected ? 'text-brand-600' : 'text-slate-600'}`}>{bank}</Text>
+                  <Text
+                    className={`text-base font-sans-semibold 
+                    ${isSelected ? 'text-brand-600 dark:text-brand-400' : 'text-slate-600 dark:text-slate-400'}`}
+                  >
+                    {bank}
+                  </Text>
                 </Pressable>
               );
             })}
           </View>
           <Input name='accountNumber' label={t('bank-acc-number')} keyboardType='number-pad' />
           <Input name='accountHolder' label={t('bank-acc-holder')} />
-          <ImagePicker
-            name='image'
-            label={t('upload-bank-book')}
-            aspect={[16, 9]}
-            className='h-40 rounded-lg overflow-hidden bg-slate-100 border border-slate-200'
-          />
+          <ImagePicker name='image' label={t('upload-bank-book')} aspect={[16, 9]} className='h-40 rounded-lg overflow-hidden' />
           <Submit label={t('actions.connect')} onSubmit={onSubmit} />
         </View>
       )}
@@ -97,14 +103,16 @@ export function RmvBank({ _id, name, number, mutate }: RmvProps) {
       initial={{ id: _id }}
       onSuccess={() => {
         mutate();
-        $popup.set(undefined);
+        $sheet.set(undefined);
       }}
     >
       {({ onSubmit }) => (
         <View className='pt-5 space-y-5'>
-          <Text className='text-base font-sans-medium'>{t('remove-bank-acc-desc').replace('$acc', `${name}-${number}`)}</Text>
+          <Text className='text-base text-slate-950 dark:text-white font-sans-medium'>
+            {t('remove-bank-acc-desc').replace('$acc', `${name}-${number}`)}
+          </Text>
           <View className='flex-row gap-x-2.5'>
-            <Button label={t('actions.no')} intent='outline' className='flex-1' onPress={() => $popup.set(undefined)} />
+            <Button label={t('actions.no')} intent='outline' className='flex-1' onPress={() => $sheet.set(undefined)} />
             <Submit label={t('actions.yes')} className='flex-1' onSubmit={onSubmit} />
           </View>
         </View>
@@ -114,8 +122,10 @@ export function RmvBank({ _id, name, number, mutate }: RmvProps) {
 }
 
 export function TransferBank({ name, account, isDeposit }: TransferProps) {
+  const user = useProfile();
   const { t } = useTranslation();
-  const balance = isDeposit ? $user.get()?.balance || 0 : getRandomValue(750000, 2500000);
+
+  const maxAmount = isDeposit ? user.balance : getRandomValue(750000, 2500000);
 
   return (
     <View>
@@ -123,22 +133,22 @@ export function TransferBank({ name, account, isDeposit }: TransferProps) {
         <View className='items-center flex-row gap-x-2.5'>
           <Image source={banks[name].image} className='w-10 h-10 bg-slate-200 rounded-full' />
           <View>
-            <Text className='font-sans-bold text-slate-600 text-base'>{account.holder}</Text>
-            <Text className='font-sans-medium text-slate-400'>{astrikeNumber(account.number)}</Text>
+            <Text className='font-sans-bold text-slate-800 dark:text-slate-200 text-base'>{account.holder}</Text>
+            <Text className='font-sans-medium text-slate-600 dark:text-slate-400'>{astrikeNumber(account.number)}</Text>
           </View>
         </View>
         <View>
-          <Text className='text-xs font-sans-semibold text-slate-600 text-right'>{t('balance')}</Text>
-          <Text className='text-base font-sans-extrabold text-right'>{balance} Ks</Text>
+          <Text className='text-xs font-sans-semibold text-slate-600 dark:text-slate-400 text-right'>{t('balance')}</Text>
+          <Text className='text-base text-slate-950 dark:text-white font-sans-extrabold text-right'>{maxAmount} Ks</Text>
         </View>
       </View>
       <Form
         url='transaction/bank'
-        schema={schemas.object({ amount: schemas.amount.max(balance, 'Insufficient balance') })}
+        schema={schemas.object({ amount: schemas.amount.max(maxAmount, 'Insufficient balance') })}
         reshape={(values) => ({ ...values, isDeposit, accountNumber: account.number })}
         revalidates={['/user']}
         onSuccess={({ values }) => {
-          $popup.set(undefined);
+          $sheet.set(undefined);
           $toast.set({
             message: t(isDeposit ? 'socialpay-to-bank-success' : 'bank-to-socialpay-success')
               .replace('$bank', name)
