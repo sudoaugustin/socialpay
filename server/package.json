@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "tsx api/index.ts",
+    "start": "tsx watch api/index.ts",
     "seeding": "tsx seeding.ts",
     "vercel-build": "echo 🤟"
   },
