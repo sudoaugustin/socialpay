@@ -1,8 +1,8 @@
-import auth from './routes/auth';
-import bank from './routes/bank';
-import session from './routes/session';
-import transaction from './routes/transaction';
-import user from './routes/user';
+import auth from '../routes/auth';
+import bank from '../routes/bank';
+import session from '../routes/session';
+import transaction from '../routes/transaction';
+import user from '../routes/user';
 import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';

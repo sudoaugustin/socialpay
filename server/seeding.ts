@@ -1,8 +1,8 @@
+import 'dotenv/config';
 import Bank from './models/Bank';
 import Session from './models/Session';
 import Transaction from './models/Transaction';
 import User from './models/User';
-import 'dotenv/config';
 import mongoose, { Types } from 'mongoose';
 import speakeasy from 'speakeasy';
 
@@ -335,15 +335,13 @@ mongoose
     await Bank.deleteMany();
     await Session.deleteMany();
     await Transaction.deleteMany();
-    console.log('Removed all data!');
+    console.log('DB Purged');
 
     await Bank.create(banks);
-    console.log('Seeded Banks!');
-
     await User.create(users);
-    console.log('Seeded users!');
-
     await Transaction.create(transactions);
-    console.log('Seeded transactions!');
+    console.log('DB Seeded');
+
+    process.exit()
   })
   .catch((err) => console.log(err));
