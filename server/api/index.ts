@@ -1,3 +1,4 @@
+import admin from '../routes/admin';
 import auth from '../routes/auth';
 import bank from '../routes/bank';
 import session from '../routes/session';
@@ -24,7 +25,8 @@ app.get('/', (req, res) => {
 app.use('/auth', auth);
 app.use('/bank', bank);
 app.use('/user', user);
+app.use('/admin', admin);
 app.use('/session', session);
 app.use('/transaction', transaction);
 
-app.listen(3000, () => console.log('Server Started'));
+app.listen(2500, () => console.log('Server Started'));

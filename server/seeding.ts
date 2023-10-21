@@ -1,8 +1,9 @@
-import 'dotenv/config';
+import Admin from './models/Admin';
 import Bank from './models/Bank';
 import Session from './models/Session';
 import Transaction from './models/Transaction';
 import User from './models/User';
+import 'dotenv/config';
 import mongoose, { Types } from 'mongoose';
 import speakeasy from 'speakeasy';
 
@@ -185,6 +186,17 @@ const banks = [
   },
 ];
 
+const admins = [
+  {
+    _id: new Types.ObjectId(),
+    avatar:
+      'https://images.unsplash.com/photo-1583864697784-a0efc8379f70?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=2576',
+      name:"Sudo Admin",
+      username: 'admin1',
+      password: '@dmin360deg$',
+  },
+];
+
 const transactions = [
   {
     type: 'payment',
@@ -333,15 +345,17 @@ mongoose
 
     await User.deleteMany();
     await Bank.deleteMany();
+    await Admin.deleteMany();
     await Session.deleteMany();
     await Transaction.deleteMany();
     console.log('DB Purged');
 
     await Bank.create(banks);
     await User.create(users);
+    await Admin.create(admins);
     await Transaction.create(transactions);
     console.log('DB Seeded');
 
-    process.exit()
+    process.exit();
   })
   .catch((err) => console.log(err));

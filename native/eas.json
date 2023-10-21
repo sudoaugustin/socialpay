@@ -8,11 +8,20 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://socialpay.vercel.app/"
+      },
+      "android": {
+        "buildType": "apk"
+      }
     },
     "production": {
       "env": {
         "EXPO_PUBLIC_API_URL": "https://socialpay.vercel.app/"
+      },
+      "android": {
+        "buildType": "apk"
       }
     }
   },
