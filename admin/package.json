@@ -6,7 +6,6 @@
     "dev": "next dev",
     "start": "next start",
     "build": "rome check . && next build",
-    "prepare": "husky install",
     "postbuild": "next-sitemap --config next.sitemap.js"
   },
   "dependencies": {
