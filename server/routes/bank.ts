@@ -1,6 +1,5 @@
 import Bank from '../models/Bank';
 import { protect } from '../utils/middlewares';
-import bodyParser from 'body-parser';
 import express from 'express';
 
 const router = express.Router();

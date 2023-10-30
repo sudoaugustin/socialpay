@@ -53,10 +53,11 @@ router.post('/', async (req, res) => {
 
     user.balance -= amount;
 
-    await user.save();
     const payee = isTopup ? await topupMobile(mobile) : await User.findOneAndUpdate({ mobile }, { $inc: { balance: +amount } });
 
     const transaction = new Transaction({ type, note, amount, payer: user._id, payee: isTopup ? mobile : payee?._id });
+
+    await user.save();
     await transaction.save();
 
     res.json({ id: transaction._id, date: transaction.date }).end();
@@ -64,15 +65,25 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/bank', async (req, res) => {
-  const { amount, isDeposit, accountNumber } = req.body;
-  await Transaction.create({
-    type: 'bank',
-    amount,
-    payer: isDeposit ? req.uid : accountNumber,
-    payee: isDeposit ? accountNumber : req.uid,
-  });
+  const user = await User.findById(req.uid);
+  if (user) {
+    const { amount, isDeposit, accountNumber } = req.body;
+    if (!isDeposit && user.balance < amount) return res.status(403).end();
 
-  res.status(200).end();
+    if (isDeposit) user.balance -= amount;
+    else user.balance += amount;
+
+    await Transaction.create({
+      type: 'bank',
+      amount,
+      payer: isDeposit ? req.uid : accountNumber,
+      payee: isDeposit ? accountNumber : req.uid,
+    });
+
+    await user.save();
+
+    res.status(200).end();
+  }
 });
 
 export default router;
