@@ -8,7 +8,7 @@ import { View } from 'react-native';
 import { $toast } from 'stores/layout';
 import schemas from 'utils/schemas';
 
-const schema = schemas.object({ name: schemas.name, email: schemas.email, avatar: schemas.string() });
+const schema = schemas.object({ name: schemas.name, avatar: schemas.string() });
 
 export default function Profile() {
   const router = useRouter();

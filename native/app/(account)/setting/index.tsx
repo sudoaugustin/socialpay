@@ -26,7 +26,15 @@ export default function Send() {
         $sheet.set({
           title: t('choose-theme'),
           children: (
-            <RadioList value={theme as string} options={themes} className='mt-5' onSelect={(theme) => $theme.set(theme as never)} />
+            <RadioList
+              value={theme as string}
+              options={themes}
+              className='mt-5'
+              onSelect={(theme) => {
+                $theme.set(theme as never);
+                $sheet.set(undefined);
+              }}
+            />
           ),
         }),
     },
