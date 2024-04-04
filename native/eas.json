@@ -21,6 +21,7 @@
         "EXPO_PUBLIC_API_URL": "https://socialpay.vercel.app/"
       },
       "android": {
+        "image": "latest",
         "buildType": "apk"
       }
     }
